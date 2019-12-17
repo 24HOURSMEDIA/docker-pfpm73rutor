@@ -1,0 +1,13 @@
+version: '3.7'
+
+# demo of the image
+
+services:
+
+  php:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./src/index.php:/var/www/html/index.php
+
