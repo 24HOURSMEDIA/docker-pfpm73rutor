@@ -10,10 +10,16 @@ Image name: **24hoursmedia/pfpm73rutor**
 * easily daemonize your php application with the already available supervisord
 * composer preinstalled
 * contains hirak/prestissimo for speeding up composer installs
+* based on alpine
 
 ## Test it
+
+```
+docker-compose
+```
 
 ```
 ./build.sh
 ./run.sh
 ```
+

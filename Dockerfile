@@ -11,13 +11,13 @@ RUN apk add --update --no-cache \
     php7-curl \
     php7-dom \
     php7-gd \
+    php7-mbstring \
     php7-iconv \
     php7-imagick \
     php7-json \
     php7-intl \
     php7-mcrypt \
     php7-fileinfo\
-    php7-mbstring \
     php7-opcache \
     php7-openssl \
     php7-pdo \
@@ -37,6 +37,10 @@ RUN apk add --update --no-cache \
     make \
     curl \
     supervisor
+
+# fix work iconv library with alphine
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
