@@ -33,6 +33,7 @@ RUN apk add --update --no-cache \
     php7-zip \
     php7-xmlwriter \
     php7-memcached \
+    php7-redis \
     php7-apcu \
     make \
     curl \
