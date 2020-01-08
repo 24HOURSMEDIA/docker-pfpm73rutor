@@ -67,7 +67,9 @@ COPY --chown=nobody src/ /var/www/html/
 EXPOSE 9000
 
 # Let supervisord start php-fpm so we can add other processes later
-COPY config/supervisord.conf /etc/supervisor/supervisord.conf
+COPY config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY config/supervisor/php-fpm.ini /etc/supervisor/conf.d/php-fpm.ini
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
