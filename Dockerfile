@@ -11,6 +11,7 @@ RUN apk add --update --no-cache \
     php7-curl \
     php7-dom \
     php7-gd \
+    php7-exif \
     php7-mbstring \
     php7-iconv \
     php7-imagick \
