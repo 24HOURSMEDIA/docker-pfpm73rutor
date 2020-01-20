@@ -54,11 +54,15 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Make sure files/folders needed by the processes are accessible when they run under the nobody user
 RUN chown -R nobody.nobody /run
 RUN mkdir -p /var/www/html && chown nobody:nobody /var/www/html
-RUN mkdir -p /.composer && chown -R nobody /.composer
+RUN mkdir -p /.composer/cache && chown -R nobody /.composer
+VOLUME /.composer
 
 USER nobody
+
 # install parallel downloads plugin for composer
 RUN composer global require hirak/prestissimo
+
+
 WORKDIR /var/www/html
 
 COPY --chown=nobody src/ /var/www/html/
