@@ -55,7 +55,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN chown -R nobody.nobody /run
 RUN mkdir -p /var/www/html && chown nobody:nobody /var/www/html
 RUN mkdir -p /.composer/cache && chown -R nobody /.composer
-VOLUME /.composer
+VOLUME /.composer/cache
 
 USER nobody
 
