@@ -67,6 +67,9 @@ RUN mkdir -p /var/www/html && chown nobody:nobody /var/www/html
 RUN mkdir -p /.composer/cache && chown -R nobody /.composer
 VOLUME /.composer/cache
 
+# 24hoursmedia utils
+COPY 24hoursmedia /24hoursmedia
+
 USER nobody
 
 # install parallel downloads plugin for composer
