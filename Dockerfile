@@ -2,6 +2,13 @@ FROM alpine:3.10
 LABEL Maintainer="24hoursmedia <info@24hoursmedia>" \
       Description="PHP-FPM 7.3 container started by supervisord"
 
+# set to 1 to include imagick libs and php extension
+ARG WITH_IMAGICK=1
+# set to 1 to include the icu patch
+ARG WITH_ICONV_PATCH=1
+# include composer acceleration (disable on prod)
+ARG WITH_PRESTISSIMO=1
+
 RUN apk add --update --no-cache \
     coreutils \
     libmemcached-dev \
@@ -14,7 +21,6 @@ RUN apk add --update --no-cache \
     php7-exif \
     php7-mbstring \
     php7-iconv \
-    php7-imagick \
     php7-json \
     php7-intl \
     php7-mcrypt \
@@ -41,8 +47,12 @@ RUN apk add --update --no-cache \
     supervisor
 
 # fix work iconv library with alphine
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
+RUN if test $WITH_ICONV_PATCH = 1; then apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv; fi
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
+# Add imagick?
+RUN if test $WITH_IMAGICK = 1; then apk add  --no-cache imagemagick-dev imagemagick php7-imagick; fi
+
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
@@ -60,20 +70,14 @@ VOLUME /.composer/cache
 USER nobody
 
 # install parallel downloads plugin for composer
-RUN composer global require hirak/prestissimo
-
+RUN if test $WITH_PRESTISSIMO = 1; then composer global require hirak/prestissimo; fi
 
 WORKDIR /var/www/html
-
-COPY --chown=nobody src/ /var/www/html/
-
-# Expose php-fpm port
 EXPOSE 9000
 
-# Let supervisord start php-fpm so we can add other processes later
+# Start supervisor
 COPY config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY config/supervisor/php-fpm.ini /etc/supervisor/conf.d/php-fpm.ini
-
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running

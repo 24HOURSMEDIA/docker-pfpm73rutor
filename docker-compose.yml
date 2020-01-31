@@ -9,5 +9,5 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     volumes:
-      - ./src/index.php:/var/www/html/index.php
+      - ./src:/var/www/html
 

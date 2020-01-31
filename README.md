@@ -25,6 +25,17 @@ docker-compose
 
 ## Customization
 
+### Build args
+
+```
+# set to 1 to include imagick libs and php extension
+ARG WITH_IMAGICK=1
+# set to 1 to include the icu patch
+ARG WITH_ICONV_PATCH=0
+# include composer acceleration (disable on prod)
+ARG WITH_PRESTISSIMO=1
+```
+
 ### Add daemons for supervisor
 
 You can add applications to supervisor to run daemonized.
