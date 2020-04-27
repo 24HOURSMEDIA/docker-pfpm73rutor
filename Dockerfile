@@ -7,7 +7,7 @@ ARG WITH_IMAGICK=1
 # set to 1 to include the icu patch
 ARG WITH_ICONV_PATCH=1
 # include composer acceleration (disable on prod)
-ARG WITH_PRESTISSIMO=1
+ARG WITH_PRESTISSIMO=0
 
 RUN apk add --update --no-cache \
     coreutils \
@@ -31,6 +31,7 @@ RUN apk add --update --no-cache \
     php7-pdo_mysql \
     php7-mysqli \
     php7-xml \
+    php7-xmlreader \
     php7-zlib \
     php7-phar \
     php7-tokenizer \
