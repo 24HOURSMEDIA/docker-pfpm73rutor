@@ -44,6 +44,7 @@ RUN apk add --update --no-cache \
     php7-memcached \
     php7-redis \
     php7-apcu \
+    php7-bcmath \
     make \
     curl \
     supervisor
