@@ -10,4 +10,6 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./src:/var/www/html
+    environment:
+      php_max_input_vars: 2000
 

@@ -47,7 +47,8 @@ RUN apk add --update --no-cache \
     php7-bcmath \
     make \
     curl \
-    supervisor
+    supervisor \
+    gettext
 
 # fix work iconv library with alphine
 RUN if test $WITH_ICONV_PATCH = 1; then apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv; fi
@@ -59,7 +60,7 @@ RUN if test $WITH_IMAGICK = 1; then apk add  --no-cache imagemagick-dev imagemag
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
-COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
+## now handled by the run script: COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
@@ -82,9 +83,10 @@ WORKDIR /var/www/html
 EXPOSE 9000
 
 # Start supervisor
+USER root
 COPY config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY config/supervisor/php-fpm.ini /etc/supervisor/conf.d/php-fpm.ini
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["sh", "/24hoursmedia/run.sh"]
 
 # Configure a healthcheck to validate that everything is up&running
 # HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping

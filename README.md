@@ -25,6 +25,20 @@ docker-compose
 
 ## Customization
 
+### With environment variables
+
+You can set the following environment variables to configure php at startup:
+
+- php_max_input_vars
+- php_date_timezone
+
+I.e. in docker-compose.yml:
+
+```
+    environment:
+      php_max_input_vars: 2000
+```
+
 ### Build args
 
 ```
